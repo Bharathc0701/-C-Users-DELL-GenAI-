@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Document Rewriter</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>✍️ AI Document Rewriter</h1>
+
+  <form method="POST" enctype="multipart/form-data">
+    <label>Select tone:</label>
+    <select name="tone">
+      {% for tone in tones %}
+        <option value="{{ tone }}" {% if tone == selected_tone %}selected{% endif %}>{{ tone }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Paste your text:</label>
+    <textarea name="text_input" rows="10" placeholder="Or upload a file...">{{ original }}</textarea>
+
+    <label>Upload .pdf / .docx / .txt:</label>
+    <input type="file" name="file">
+
+    <button type="submit">Rewrite</button>
+  </form>
+
+  {% if rewritten %}
+    <div class="output">
+      <h2>Original Text</h2>
+      <textarea readonly rows="10">{{ original }}</textarea>
+
+      <h2>Rewritten Text ({{ selected_tone }})</h2>
+      <form action="/download" method="POST">
+        <textarea name="rewritten_text" readonly rows="10">{{ rewritten }}</textarea>
+        <button type="submit">⬇️ Download</button>
+      </form>
+    </div>
+  {% endif %}
+</body>
+</html>
